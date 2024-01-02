@@ -1,0 +1,17 @@
+server:
+  port: 8082
+spring:
+  flyway:
+    locations: classpath:db/migration,classpath:db/seed
+  datasource:
+    username: postgres
+    password: secret
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5441/geomoz-server
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    database: postgresql
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
