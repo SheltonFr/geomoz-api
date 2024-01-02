@@ -2,9 +2,12 @@ package sheltonfrancisco.geomozapi.province.presentation;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import sheltonfrancisco.geomozapi.province.domain.Province;
+import sheltonfrancisco.geomozapi.province.domain.ProvinceMapper;
 import sheltonfrancisco.geomozapi.province.domain.request.CreateProvinceRequest;
 import sheltonfrancisco.geomozapi.province.service.ProvinceService;
 
@@ -16,12 +19,12 @@ public class ProvinceController {
     private final ProvinceService service;
 
     @PostMapping
-    public ResponseEntity<Province> create(@RequestBody CreateProvinceRequest request) {
-        return ResponseEntity.ok(service.create(request));
+    public ResponseEntity<ProvinceJson> create(@RequestBody CreateProvinceRequest request) {
+        return ResponseEntity.ok(ProvinceMapper.INSTANCE.mapToJson(service.create(request)));
     }
 
     @GetMapping
-    public ResponseEntity<Page<Province>> findAll() {
-        return ResponseEntity.ok(service.findAll());
+    public ResponseEntity<Page<ProvinceJson>> findAll(@PageableDefault(size = 11, page = 0) Pageable pageable) {
+        return ResponseEntity.ok(ProvinceMapper.INSTANCE.mapToJson(service.findAll(pageable)));
     }
 }

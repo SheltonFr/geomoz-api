@@ -4,9 +4,11 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
+import sheltonfrancisco.geomozapi.district.domain.District;
 import sheltonfrancisco.geomozapi.utils.EnumTypes;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Builder
 @AllArgsConstructor
@@ -32,4 +34,7 @@ public class Province {
     private LocalDateTime createdAt;
     @UpdateTimestamp
     private LocalDateTime updatedAt;
+
+    @OneToMany(mappedBy = "province", fetch = FetchType.LAZY)
+    private List<District> districts;
 }
