@@ -13,12 +13,11 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(GeoMozException.class)
     public ResponseEntity<ExceptionDetails> handleGeoMozException(GeoMozException exception) {
         return new ResponseEntity<>(
-                new ExceptionDetails(
-                        HttpStatusCode.valueOf(exception.getHttpStatus().value()),
-                        exception.getHttpStatus(),
-                        exception.getMeessage(),
-                        LocalDateTime.now()
-                ),
+                ExceptionDetails.builder()
+                        .httpStatus(exception.getHttpStatus())
+                        .statusCode(HttpStatusCode.valueOf(exception.getHttpStatus().value()))
+                        .message(exception.getMeessage())
+                        .timestamp(LocalDateTime.now()).build(),
                 exception.getHttpStatus()
         );
     }
