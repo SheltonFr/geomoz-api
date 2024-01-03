@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import sheltonfrancisco.geomozapi.province.domain.Province;
@@ -26,5 +27,11 @@ public class ProvinceController {
     @GetMapping
     public ResponseEntity<Page<ProvinceJson>> findAll(@PageableDefault(size = 11, page = 0) Pageable pageable) {
         return ResponseEntity.ok(ProvinceMapper.INSTANCE.mapToJson(service.findAll(pageable)));
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteById(@PathVariable Long id) {
+        service.deleteById(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

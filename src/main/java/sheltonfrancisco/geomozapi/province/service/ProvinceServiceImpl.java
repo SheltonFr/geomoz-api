@@ -2,6 +2,7 @@ package sheltonfrancisco.geomozapi.province.service;
 
 import lombok.RequiredArgsConstructor;
 import org.hibernate.exception.ConstraintViolationException;
+import org.hibernate.sql.exec.ExecutionException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -24,21 +25,22 @@ public class ProvinceServiceImpl implements ProvinceService {
         try {
             Province province = ProvinceMapper.INSTANCE.mapToModel(request);
             return repository.save(province);
+        } catch (ConstraintViolationException exception) {
+            throw new GeoMozException(exception.getMessage(), HttpStatus.CONFLICT);
         } catch (DataIntegrityViolationException exception) {
-            if (exception.getCause() instanceof ConstraintViolationException)
-                throw new GeoMozException(exception.getMessage(), HttpStatus.CONFLICT);
-            else throw new GeoMozException(exception.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+            throw new GeoMozException(exception.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     @Override
     public Province findById(Long id) {
-        return null;
+        return repository.findById(id)
+                .orElseThrow(() -> new GeoMozException("Province not found!", HttpStatus.NOT_FOUND));
     }
 
     @Override
     public Page<Province> findAll(Pageable pageable) {
-        throw new GeoMozException("Testando excecao personalizada!", HttpStatus.CONFLICT);
+        return repository.findAll(pageable);
     }
 
     @Override
@@ -48,6 +50,7 @@ public class ProvinceServiceImpl implements ProvinceService {
 
     @Override
     public void deleteById(Long id) {
-
+        Province province = findById(id);
+        repository.delete(province);
     }
 }
