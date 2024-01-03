@@ -38,7 +38,7 @@ public class ProvinceServiceImpl implements ProvinceService {
 
     @Override
     public Page<Province> findAll(Pageable pageable) {
-        return repository.findAll(pageable);
+        throw new GeoMozException("Testando excecao personalizada!", HttpStatus.CONFLICT);
     }
 
     @Override

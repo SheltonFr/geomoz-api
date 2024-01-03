@@ -15,7 +15,6 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(
                 ExceptionDetails.builder()
                         .httpStatus(exception.getHttpStatus())
-                        .statusCode(HttpStatusCode.valueOf(exception.getHttpStatus().value()))
                         .message(exception.getMeessage())
                         .timestamp(LocalDateTime.now()).build(),
                 exception.getHttpStatus()

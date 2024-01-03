@@ -8,7 +8,6 @@ import java.time.LocalDateTime;
 
 @Builder
 public record ExceptionDetails (
-        HttpStatusCode statusCode,
         HttpStatus httpStatus,
         String message,
         LocalDateTime timestamp
